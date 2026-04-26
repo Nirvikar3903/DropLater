@@ -12,6 +12,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SecurityIcon from '@mui/icons-material/Security';
 import TimerIcon from '@mui/icons-material/Timer';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { useTheme } from '@mui/material/styles';
 
 const stages = [
   {
@@ -82,14 +83,12 @@ const featureCards = [
   },
 ];
 
-/**
- * FlowDiagram — animated conceptual flow diagram of the system architecture.
- * @param {{ noteCounts?: { pending: number, delivered: number, failed: number, dead: number } }} props
- */
 export default function FlowDiagram({ noteCounts = {} }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
   return (
     <MuiBox>
-      {/* Pipeline */}
       <MuiBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
         {stages.map((stage, i) => (
           <motion.div
@@ -133,10 +132,10 @@ export default function FlowDiagram({ noteCounts = {} }) {
                     {stage.icon}
                   </MuiBox>
                   <MuiBox sx={{ flex: 1 }}>
-                    <MuiTypography variant="h6" sx={{ color: '#e4e4e7', fontWeight: 700 }}>
+                    <MuiTypography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 700 }}>
                       {stage.name}
                     </MuiTypography>
-                    <MuiTypography variant="caption" sx={{ color: '#9ca3af' }}>
+                    <MuiTypography variant="caption" sx={{ color: theme.palette.text.secondary }}>
                       {stage.description}
                     </MuiTypography>
                   </MuiBox>
@@ -145,8 +144,8 @@ export default function FlowDiagram({ noteCounts = {} }) {
                       px: 1.5,
                       py: 0.5,
                       borderRadius: 2,
-                      backgroundColor: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.07)',
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`,
                     }}
                   >
                     <MuiTypography variant="caption" sx={{ color: stage.color, fontWeight: 600, fontSize: '0.7rem' }}>
@@ -157,7 +156,6 @@ export default function FlowDiagram({ noteCounts = {} }) {
               </CardContent>
             </MuiCard>
 
-            {/* Arrow */}
             {stage.arrow && (
               <MuiBox sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 1 }}>
                 <motion.div
@@ -166,7 +164,7 @@ export default function FlowDiagram({ noteCounts = {} }) {
                 >
                   <ArrowDownwardIcon sx={{ color: stage.color, fontSize: 20, opacity: 0.7 }} />
                 </motion.div>
-                <MuiTypography variant="caption" sx={{ color: '#6b7280', fontSize: '0.65rem', mt: 0.25 }}>
+                <MuiTypography variant="caption" sx={{ color: theme.palette.text.disabled, fontSize: '0.65rem', mt: 0.25 }}>
                   {stage.arrow}
                 </MuiTypography>
               </MuiBox>
@@ -175,9 +173,8 @@ export default function FlowDiagram({ noteCounts = {} }) {
         ))}
       </MuiBox>
 
-      {/* Feature cards */}
       <MuiDivider sx={{ my: 5 }} />
-      <MuiTypography variant="h4" sx={{ textAlign: 'center', mb: 3, color: '#e4e4e7' }}>
+      <MuiTypography variant="h4" sx={{ textAlign: 'center', mb: 3, color: theme.palette.text.primary }}>
         Key Concepts
       </MuiTypography>
 
@@ -199,19 +196,19 @@ export default function FlowDiagram({ noteCounts = {} }) {
               <CardContent sx={{ p: 2.5 }}>
                 <MuiBox sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
                   <MuiBox sx={{ color: card.color }}>{card.icon}</MuiBox>
-                  <MuiTypography variant="h6" sx={{ color: '#e4e4e7', fontWeight: 700 }}>
+                  <MuiTypography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 700 }}>
                     {card.title}
                   </MuiTypography>
                 </MuiBox>
-                <MuiTypography variant="body2" sx={{ color: '#9ca3af', mb: 2 }}>
+                <MuiTypography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
                   {card.description}
                 </MuiTypography>
                 <MuiBox
                   sx={{
                     p: 1.5,
                     borderRadius: 1.5,
-                    backgroundColor: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.06)',
+                    backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
                   }}
                 >
                   {card.visual.map((line, j) => (
@@ -220,7 +217,7 @@ export default function FlowDiagram({ noteCounts = {} }) {
                       variant="caption"
                       sx={{
                         fontFamily: 'monospace',
-                        color: '#e4e4e7',
+                        color: theme.palette.text.primary,
                         display: 'block',
                         py: 0.25,
                       }}

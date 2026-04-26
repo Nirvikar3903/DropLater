@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import PageHeader from '../common/PageHeader';
 import FlowDiagram from '../features/notes/components/FlowDiagram';
-import { useGetNotesWithFallback } from '../features/notes/notesApi';
+import { useGetNotesQuery } from '../features/notes/notesApi';
 import { useMemo } from 'react';
 
 export default function SystemFlowPage() {
-  const { data: notes = [] } = useGetNotesWithFallback({});
+  const { data: notes = [] } = useGetNotesQuery({});
 
   const counts = useMemo(() => ({
     pending: notes.filter((n) => n.status === 'pending').length,

@@ -18,7 +18,7 @@ export default function PageHeader({ title, subtitle, action }) {
       }}
     >
       <MuiBox>
-        <MuiTypography variant="h2" sx={{ color: '#e4e4e7' }}>
+        <MuiTypography variant="h2">
           {title}
         </MuiTypography>
         {subtitle && (

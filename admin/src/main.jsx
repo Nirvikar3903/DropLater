@@ -2,23 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider, CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import store from './app/store';
-import theme from './app/theme';
+import ThemeContextProvider from './app/ThemeContextProvider';
 import AppShell from './layout/AppShell';
 import DashboardPage from './pages/DashboardPage';
 import CreateNotePage from './pages/CreateNotePage';
 import LiveMonitorPage from './pages/LiveMonitorPage';
 import DebugPage from './pages/DebugPage';
 import SystemFlowPage from './pages/SystemFlowPage';
-import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      <ThemeContextProvider>
         <SnackbarProvider
           maxSnack={3}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -37,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </Routes>
           </BrowserRouter>
         </SnackbarProvider>
-      </ThemeProvider>
+      </ThemeContextProvider>
     </Provider>
   </React.StrictMode>
 );

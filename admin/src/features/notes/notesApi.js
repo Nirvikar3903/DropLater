@@ -6,7 +6,10 @@ export const notesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: '/',
     prepareHeaders: (headers) => {
-      headers.set('authorization', `Bearer IMTheNightCoderNSKudalkar`);
+      const token = import.meta.env.VITE_ADMIN_TOKEN;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
       return headers;
     },
   }),

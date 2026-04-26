@@ -20,7 +20,7 @@ export default function SectionCard({ title, action, children, sx = {} }) {
             }}
           >
             {title && (
-              <MuiTypography variant="h5" sx={{ color: '#e4e4e7' }}>
+              <MuiTypography variant="h5">
                 {title}
               </MuiTypography>
             )}

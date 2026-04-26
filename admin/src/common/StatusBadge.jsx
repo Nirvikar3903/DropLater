@@ -32,8 +32,12 @@ const statusConfig = {
  * StatusBadge — colored chip for note status.
  * @param {{ status: 'pending'|'delivered'|'failed'|'dead' }} props
  */
+import { useTheme } from '@mui/material/styles';
+
 export default function StatusBadge({ status }) {
   const config = statusConfig[status] || statusConfig.pending;
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   return (
     <motion.div layoutId={`status-${status}`} style={{ display: 'inline-flex' }}>
@@ -47,8 +51,8 @@ export default function StatusBadge({ status }) {
           fontWeight: 700,
           letterSpacing: '0.03em',
           ...(status === 'dead' && {
-            backgroundColor: 'rgba(107,114,128,0.25)',
-            color: '#9ca3af',
+            backgroundColor: isDark ? 'rgba(107,114,128,0.25)' : 'rgba(107,114,128,0.15)',
+            color: theme.palette.text.secondary,
           }),
         }}
       />

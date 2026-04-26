@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MuiBox from '../mui/MuiBox';
 import MuiTypography from '../mui/MuiTypography';
@@ -15,7 +15,7 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useEffect } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 const navItems = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
@@ -41,6 +41,9 @@ const navItems = [
 export default function Sidebar({ collapsed, onToggle }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  
   const [apiOnline, setApiOnline] = useState(false);
   const [sinkOnline, setSinkOnline] = useState(false);
 
@@ -67,11 +70,11 @@ export default function Sidebar({ collapsed, onToggle }) {
       sx={{
         width,
         minHeight: '100vh',
-        backgroundColor: '#0d0f14',
-        borderRight: '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: isDark ? '#0d0f14' : '#ffffff',
+        borderRight: `1px solid ${theme.palette.divider}`,
         display: 'flex',
         flexDirection: 'column',
-        transition: 'width 0.2s ease',
+        transition: 'width 0.2s ease, background-color 0.3s ease',
         overflow: 'hidden',
         position: 'fixed',
         top: 0,
@@ -83,12 +86,12 @@ export default function Sidebar({ collapsed, onToggle }) {
       <MuiBox sx={{ px: collapsed ? 1 : 2.5, py: 2.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {!collapsed && (
           <MuiTypography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
-            <span style={{ color: '#fff' }}>Drop</span>
+            <span style={{ color: theme.palette.text.primary }}>Drop</span>
             <span style={{ color: '#7c6ff7' }}>Later</span>
-            <span style={{ color: '#6b7280', fontSize: '0.6rem', marginLeft: 6, fontWeight: 400 }}>admin</span>
+            {!collapsed && <span style={{ color: theme.palette.text.disabled, fontSize: '0.6rem', marginLeft: 6, fontWeight: 400 }}>admin</span>}
           </MuiTypography>
         )}
-        <IconButton size="small" onClick={onToggle} sx={{ color: '#6b7280' }}>
+        <IconButton size="small" onClick={onToggle} sx={{ color: theme.palette.text.disabled }}>
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </MuiBox>
@@ -113,7 +116,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                 '&:hover': { backgroundColor: 'rgba(124,111,247,0.08)' },
               }}
             >
-              <ListItemIcon sx={{ color: isActive ? '#7c6ff7' : '#6b7280', minWidth: collapsed ? 0 : 36 }}>
+              <ListItemIcon sx={{ color: isActive ? '#7c6ff7' : theme.palette.text.disabled, minWidth: collapsed ? 0 : 36 }}>
                 {item.icon}
               </ListItemIcon>
               {!collapsed && (
@@ -122,7 +125,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                   primaryTypographyProps={{
                     fontSize: '0.85rem',
                     fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#e4e4e7' : '#9ca3af',
+                    color: isActive ? theme.palette.text.primary : theme.palette.text.secondary,
                   }}
                 />
               )}
@@ -138,13 +141,13 @@ export default function Sidebar({ collapsed, onToggle }) {
         <MuiBox sx={{ px: 2.5, py: 2 }}>
           <MuiBox sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
             <MuiBox sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: apiOnline ? '#639922' : '#E24B4A' }} />
-            <MuiTypography variant="caption" sx={{ color: '#6b7280' }}>
+            <MuiTypography variant="caption" sx={{ color: theme.palette.text.disabled }}>
               API {apiOnline ? 'online' : 'offline'}
             </MuiTypography>
           </MuiBox>
           <MuiBox sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <MuiBox sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: sinkOnline ? '#639922' : '#E24B4A' }} />
-            <MuiTypography variant="caption" sx={{ color: '#6b7280' }}>
+            <MuiTypography variant="caption" sx={{ color: theme.palette.text.disabled }}>
               Sink {sinkOnline ? 'online' : 'offline'}
             </MuiTypography>
           </MuiBox>

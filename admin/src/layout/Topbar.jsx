@@ -2,10 +2,13 @@ import { useLocation } from 'react-router-dom';
 import MuiBox from '../mui/MuiBox';
 import MuiTypography from '../mui/MuiTypography';
 import MuiChip from '../mui/MuiChip';
-import { useGetNotesWithFallback } from '../features/notes/notesApi';
+import { useGetNotesQuery } from '../features/notes/notesApi';
+import { useColorMode } from '../app/ThemeContextProvider';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ThemeToggle from '../common/ThemeToggle';
+import { useTheme } from '@mui/material/styles';
 
 const pageTitles = {
   '/': 'Dashboard',
@@ -17,7 +20,9 @@ const pageTitles = {
 
 export default function Topbar({ pollInterval, onPollIntervalChange }) {
   const location = useLocation();
-  const { data: notes = [] } = useGetNotesWithFallback({});
+  const theme = useTheme();
+  const { mode, toggleColorMode } = useColorMode();
+  const { data: notes = [] } = useGetNotesQuery({});
   const pendingCount = notes.filter((n) => n.status === 'pending').length;
 
   const pathKey = Object.keys(pageTitles).find((key) =>
@@ -33,22 +38,28 @@ export default function Topbar({ pollInterval, onPollIntervalChange }) {
         alignItems: 'center',
         justifyContent: 'space-between',
         px: 3,
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
-        backgroundColor: '#0d0f14',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        backgroundColor: theme.palette.background.paper,
+        transition: 'background-color 0.3s ease',
       }}
     >
-      <MuiTypography variant="h5" sx={{ color: '#e4e4e7', fontWeight: 700 }}>
+      <MuiTypography variant="h5" sx={{ color: theme.palette.text.primary, fontWeight: 700 }}>
         {title}
       </MuiTypography>
 
       <MuiBox sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <MuiBox sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <MuiTypography variant="caption" sx={{ color: '#6b7280' }}>Poll:</MuiTypography>
+          <MuiTypography variant="caption" sx={{ color: theme.palette.text.secondary }}>Poll:</MuiTypography>
           <Select
             value={pollInterval}
             onChange={(e) => onPollIntervalChange(e.target.value)}
             size="small"
-            sx={{ fontSize: '0.75rem', height: 30, '& .MuiSelect-select': { py: 0.5 } }}
+            sx={{ 
+              fontSize: '0.75rem', 
+              height: 30, 
+              '& .MuiSelect-select': { py: 0.5 },
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: theme.palette.divider }
+            }}
           >
             <MenuItem value={5000}>5s</MenuItem>
             <MenuItem value={10000}>10s</MenuItem>
@@ -56,6 +67,8 @@ export default function Topbar({ pollInterval, onPollIntervalChange }) {
             <MenuItem value={0}>Off</MenuItem>
           </Select>
         </MuiBox>
+
+        <ThemeToggle mode={mode} onToggle={toggleColorMode} />
 
         {pendingCount > 0 && (
           <MuiChip

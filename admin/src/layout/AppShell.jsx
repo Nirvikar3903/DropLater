@@ -4,14 +4,17 @@ import MuiBox from '../mui/MuiBox';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 
+import { useTheme } from '@mui/material/styles';
+
 export default function AppShell() {
   const [collapsed, setCollapsed] = useState(false);
   const [pollInterval, setPollInterval] = useState(5000);
+  const theme = useTheme();
 
   const sidebarWidth = collapsed ? 64 : 240;
 
   return (
-    <MuiBox sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0a0c10' }}>
+    <MuiBox sx={{ display: 'flex', minHeight: '100vh', backgroundColor: theme.palette.background.default, transition: 'background-color 0.3s ease' }}>
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
 
       <MuiBox sx={{ flex: 1, ml: `${sidebarWidth}px`, transition: 'margin-left 0.2s ease', display: 'flex', flexDirection: 'column' }}>
